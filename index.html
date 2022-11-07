@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookMarks</title>
+    <style>
+        :root {
+            color-scheme: light dark;
+        }
+    </style>
+    <link rel="stylesheet" href="css/mdui.css">
+    <script src="js/mdui.js"></script>
+    <script src="js/vue.js"></script>
+</head>
+
+<body class="mdui-theme-layout-auto">
+    <div class="mdui-toolbar">
+        <a href="javascript:;" class="mdui-typo-title" mdui-drawer="{target: '.mdui-drawer'}">BookMarks</a>
+        <div class="mdui-toolbar-spacer"></div>
+        <a href="javascript:;" class="mdui-btn mdui-btn-icon" mdui-tooltip="{content: '设置'}"
+            mdui-menu="{target: '.mdui-menu'}"><i class="mdui-icon material-icons">more_vert</i></a>
+        <ul class="mdui-menu">
+            <li class="mdui-menu-item">
+                <a href="\" class="mdui-ripple">
+                    <i class="mdui-menu-item-icon mdui-icon material-icons">refresh</i>刷新页面
+                </a>
+            </li>
+            <li class="mdui-menu-item" mdui-dialog="{target: '.mdui-dialog'}">
+                <a href="javascript:;" class="mdui-ripple">
+                    <i class="mdui-menu-item-icon mdui-icon material-icons">add_circle</i>添加书签
+                </a>
+            </li>
+            <li class="mdui-menu-item">
+                <a href="javascript:;" class="mdui-ripple">
+                    <i class="mdui-menu-item-icon mdui-icon material-icons">screen_share</i>分享
+                </a>
+            </li>
+            <li class="mdui-divider"></li>
+            <li class="mdui-menu-item">
+                <a href="javascript:;" class="mdui-ripple">
+                    <i class="mdui-menu-item-icon"></i>取消
+                </a>
+            </li>
+        </ul>
+        <div class="mdui-dialog">
+            <div class="mdui-dialog-title">添加书签</div>
+            <div class="mdui-dialog-content">
+                选择一个分组：
+                <select class="mdui-select" mdui-select="{position: 'bottom'}">
+                    <option value="1">State 1</option>
+                    <option value="2">State 2</option>
+                    <option value="3">State 3</option>
+                    <option value="4">State 4</option>
+                    <option value="5">State 5</option>
+                    <option value="6">State 6</option>
+                </select>
+                <div class="mdui-textfield mdui-textfield-floating-label">
+                    <label class="mdui-textfield-label">标题</label>
+                    <input class="mdui-textfield-input" type="text" />
+                </div>
+                <div class="mdui-textfield mdui-textfield-floating-label">
+                    <label class="mdui-textfield-label">链接</label>
+                    <input class="mdui-textfield-input" type="text" />
+                </div>
+                <div class="mdui-textfield mdui-textfield-floating-label">
+                    <label class="mdui-textfield-label">描述</label>
+                    <input class="mdui-textfield-input" type="text" />
+                </div>
+            </div>
+            <div class="mdui-dialog-actions">
+                <button class="mdui-btn mdui-color-theme-accent mdui-ripple">确定</button>
+                <button class="mdui-btn mdui-ripple" mdui-dialog-close>取消</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="cardDiv">
+        <div class="mdui-drawer mdui-drawer-close">
+            <ul class="mdui-list">
+                <li class="mdui-subheader">书签组</li>
+                <li class="mdui-list-item mdui-ripple" mdui-drawer-close v-for="dt in listText" @click="openList(dt)"
+                    style="border-radius: 0px 50px 50px 0px;">
+                    <i class="mdui-list-item-avatar mdui-icon material-icons">folder</i>
+                    <div class="mdui-list-item-content">{{ dt }}</div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="mdui-container mdui-row mdui-center">
+
+            <div>
+                <div class="mdui-col-sm-3 mdui-col-md-3 mdui-m-t-2" v-for="dt in cardText">
+                    <div class="mdui-card mdui-hoverable mdui-ripple" @click="openUrl(dt.url)">
+                        <!-- 卡片的媒体内容，可以包含图片、视频等媒体内容，以及标题、副标题 -->
+                        <div class="mdui-card-media">
+                            <img v-bind:src="dt.imgsrc" />
+                            <!-- 卡片的标题和副标题 -->
+                            <div class="mdui-card-primary">
+                                <div class="mdui-card-primary-title mdui-text-truncate">{{ dt.title }}</div>
+                                <div class="mdui-card-primary-subtitle mdui-text-truncate">{{ dt.urlText }}</div>
+                            </div>
+                            <!-- 卡片的内容 -->
+                            <div class="mdui-card-content">
+                                <div style="height: 100px;overflow: hidden;">{{ dt.text }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- <div class="mdui-divider mdui-container mdui-center"></div> -->
+    <div class="mdui-container">
+        <p class="mdui-text-center" style="opacity: 0.68;">MDUI · VUE @炒鱼豆腐</p>
+    </div>
+
+    <script src="bookmarks.js"></script>
+    <script>
+        var cardDiv = new Vue({
+            el: '#cardDiv',
+            data: {
+                listText: Object.keys(bookmarks),
+                cardText: bookmarks[Object.keys(bookmarks)[0]]
+            },
+            methods: {
+                openUrl: function (url) {
+                    window.open(url);
+                },
+                openList: function (text) {
+                    // `this` 指向 vm 实例
+                    return this.cardText = bookmarks[text]
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
